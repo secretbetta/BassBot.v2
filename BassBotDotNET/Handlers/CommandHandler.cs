@@ -2,7 +2,7 @@
 using Discord.WebSocket;
 using System.Reflection;
 
-namespace BASS.Handlers;
+namespace BassBotDotNET.Handlers;
 public class CommandHandler
 {
     private readonly DiscordSocketClient _client;
@@ -42,7 +42,7 @@ public class CommandHandler
         int argPos = 0;
 
         // Determine if the message is a command based on the prefix and make sure no bots trigger commands
-        if (!(message.HasCharPrefix('!', ref argPos) ||
+        if (!(message.HasCharPrefix('~', ref argPos) ||
             message.HasMentionPrefix(_client.CurrentUser, ref argPos)) ||
             message.Author.IsBot)
             return;
