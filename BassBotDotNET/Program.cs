@@ -37,7 +37,7 @@ public class Program
 
     public async Task Client_Ready()
     {
-        ulong guildId = 738870706191728772; // Testing Server
+        ulong guildId = 738870706191728772; // The testing server
 
         // Let's build a guild command! We're going to need a guild so lets just put that in a variable.
         var guild = _client.GetGuild(guildId);
@@ -99,7 +99,7 @@ public class Program
         }
     }
 
-    private async Task HandleListRoleCommand(SocketSlashCommand command)
+    private static async Task HandleListRoleCommand(SocketSlashCommand command)
     {
         // We need to extract the user parameter from the command.
         var parameters = command.Data.Options.ToArray();
