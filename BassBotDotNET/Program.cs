@@ -39,6 +39,12 @@ public class Program
     {
         ulong guildId = 738870706191728772; // The testing server
 
+        if (_client == null)
+        {
+            Console.WriteLine("Client is null");
+            return;
+        }
+
         // Let's build a guild command! We're going to need a guild so lets just put that in a variable.
         var guild = _client.GetGuild(guildId);
 
@@ -104,6 +110,7 @@ public class Program
         // We need to extract the user parameter from the command.
         var parameters = command.Data.Options.ToArray();
         var guildUser = (SocketGuildUser)parameters.First().Value;
+
         var isPrivate = parameters.Length > 1 && parameters[1].Value.ToString().Equals("true", StringComparison.InvariantCultureIgnoreCase);
 
         // We remove the everyone role and select the mention of each role.
