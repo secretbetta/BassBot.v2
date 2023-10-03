@@ -1,4 +1,5 @@
-﻿using Discord;
+﻿using BassBotDotNET.SlashCommandModules;
+using Discord;
 using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
@@ -13,8 +14,11 @@ public class Program
     {
         _client = new DiscordSocketClient();
 
+        SettingSlashCommandModule settingSlashCommandModule = new SettingSlashCommandModule();
+
         _client.Log += Log;
         _client.Ready += Client_Ready;
+        _client.Ready += settingSlashCommandModule.Client_Ready;
 
         _client.SlashCommandExecuted += SlashCommandHandler;
 
@@ -125,6 +129,5 @@ public class Program
 
         // Now, Let's respond with the embed.
         await command.RespondAsync(embed: embedBuilder.Build(), ephemeral: isPrivate);
-        //await command.RespondAsync(embed: embedBuilder.Build());
     }
 }
