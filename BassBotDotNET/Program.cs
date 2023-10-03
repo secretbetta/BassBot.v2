@@ -10,15 +10,14 @@ public class Program
 
     private DiscordSocketClient? _client;
 
+    private readonly SettingSlashCommandModule _settingSlashCommandModule = new();
+
     public async Task MainAsync()
     {
         _client = new DiscordSocketClient();
 
-        SettingSlashCommandModule settingSlashCommandModule = new SettingSlashCommandModule();
-
         _client.Log += Log;
         _client.Ready += Client_Ready;
-        _client.Ready += settingSlashCommandModule.Client_Ready;
 
         _client.SlashCommandExecuted += SlashCommandHandler;
 
@@ -78,6 +77,7 @@ public class Program
             await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
             
             await _client.Rest.CreateGuildCommand(listRolesGuild.Build(), guildId);
+            await _client.Rest.CreateGuildCommand(_settingSlashCommandModule.Command().Build(), guildId);
             // With global commands we don't need the guild.
             await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
             // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
@@ -92,6 +92,7 @@ public class Program
             Console.WriteLine(json);
         }
     }
+
     private async Task SlashCommandHandler(SocketSlashCommand command)
     {
         switch (command.Data.Name)
@@ -101,6 +102,9 @@ public class Program
                 break;
             case "list-roles-private":
                 await HandleListRoleCommand(command);
+                break;
+            case "settings":
+                await _settingSlashCommandModule.HandleSettingsCommand(command);
                 break;
             // all other commands
             default:
