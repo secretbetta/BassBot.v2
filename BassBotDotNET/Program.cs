@@ -4,6 +4,8 @@ using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
 
+namespace BassBotDotNET;
+
 /// <summary>
 /// Main program to run the discord bot.
 /// </summary>
