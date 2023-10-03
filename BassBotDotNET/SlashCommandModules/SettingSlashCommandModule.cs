@@ -10,12 +10,19 @@ using Discord.WebSocket;
 
 namespace BassBotDotNET.SlashCommandModules;
 
+/// <summary>
+/// The setting slash command module.
+/// </summary>
 public class SettingSlashCommandModule
 {
     public string FieldA { get; set; } = "test";
     public int FieldB { get; set; } = 10;
     public bool FieldC { get; set; } = true;
 
+    /// <summary>
+    /// Main command set up.
+    /// </summary>
+    /// <returns>The command builder to register into the bot.</returns>
     public SlashCommandBuilder Command()
     {
         var guildCommand = new SlashCommandBuilder()
@@ -67,6 +74,10 @@ public class SettingSlashCommandModule
         return guildCommand;
     }
 
+    /// <summary>
+    /// Handles the settings command parameters/inputs.
+    /// </summary>
+    /// <param name="command">The command data.</param>
     public async Task HandleSettingsCommand(SocketSlashCommand command)
     {
         // First lets extract our variables

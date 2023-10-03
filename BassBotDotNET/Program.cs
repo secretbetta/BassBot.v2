@@ -4,14 +4,21 @@ using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
 
+/// <summary>
+/// Main program to run the discord bot.
+/// </summary>
 public class Program
 {
-    public static Task Main(string[] args) => new Program().MainAsync();
+    public static Task Main() => new Program().MainAsync();
 
     private DiscordSocketClient? _client;
 
+    // Settings command module
     private readonly SettingSlashCommandModule _settingSlashCommandModule = new();
 
+    /// <summary>
+    /// Main method for the bot.
+    /// </summary>
     public async Task MainAsync()
     {
         _client = new DiscordSocketClient();
@@ -32,12 +39,21 @@ public class Program
         await Task.Delay(-1);
     }
 
+    /// <summary>
+    /// Basic message logger.
+    /// </summary>
+    /// <param name="msg"></param>
+    /// <returns></returns>
     private Task Log(LogMessage msg)
     {
         Console.WriteLine(msg.ToString());
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Creates a the discord bot client. This is where commands and other features are registered into the bot.
+    /// </summary>
+    /// <returns></returns>
     public async Task Client_Ready()
     {
         ulong guildId = 738870706191728772; // The testing server
@@ -93,6 +109,11 @@ public class Program
         }
     }
 
+    /// <summary>
+    /// Handles when a slash command is executed.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns></returns>
     private async Task SlashCommandHandler(SocketSlashCommand command)
     {
         switch (command.Data.Name)
@@ -113,6 +134,12 @@ public class Program
         }
     }
 
+
+    /// <summary>
+    /// Handles the list role command.
+    /// </summary>
+    /// <param name="command"></param>
+    /// <returns></returns>
     private static async Task HandleListRoleCommand(SocketSlashCommand command)
     {
         // We need to extract the user parameter from the command.
