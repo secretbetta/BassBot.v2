@@ -44,18 +44,16 @@ public class Program
     /// <summary>
     /// Basic message logger.
     /// </summary>
-    /// <param name="msg"></param>
-    /// <returns></returns>
-    private Task Log(LogMessage msg)
+    /// <param name="message">The log message to output to console.</param>
+    private Task Log(LogMessage message)
     {
-        Console.WriteLine(msg.ToString());
+        Console.WriteLine(message.ToString());
         return Task.CompletedTask;
     }
 
     /// <summary>
     /// Creates a the discord bot client. This is where commands and other features are registered into the bot.
     /// </summary>
-    /// <returns></returns>
     public async Task Client_Ready()
     {
         ulong guildId = 738870706191728772; // The testing server
@@ -114,8 +112,7 @@ public class Program
     /// <summary>
     /// Handles when a slash command is executed.
     /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
+    /// <param name="command">The slash command data from Discord.</param>
     private async Task SlashCommandHandler(SocketSlashCommand command)
     {
         switch (command.Data.Name)
@@ -140,8 +137,7 @@ public class Program
     /// <summary>
     /// Handles the list role command.
     /// </summary>
-    /// <param name="command"></param>
-    /// <returns></returns>
+    /// <param name="command">The slash command data.</param>
     private static async Task HandleListRoleCommand(SocketSlashCommand command)
     {
         // We need to extract the user parameter from the command.
