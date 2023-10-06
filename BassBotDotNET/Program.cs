@@ -4,14 +4,23 @@ using Discord.Net;
 using Discord.WebSocket;
 using Newtonsoft.Json;
 
+namespace BassBotDotNET;
+
+/// <summary>
+/// Main program to run the discord bot.
+/// </summary>
 public class Program
 {
-    public static Task Main(string[] args) => new Program().MainAsync();
+    public static Task Main() => new Program().MainAsync();
 
     private DiscordSocketClient? _client;
 
+    // Settings command module
     private readonly SettingSlashCommandModule _settingSlashCommandModule = new();
 
+    /// <summary>
+    /// Main method for the bot.
+    /// </summary>
     public async Task MainAsync()
     {
         _client = new DiscordSocketClient();
@@ -32,12 +41,19 @@ public class Program
         await Task.Delay(-1);
     }
 
-    private Task Log(LogMessage msg)
+    /// <summary>
+    /// Basic message logger.
+    /// </summary>
+    /// <param name="message">The log message to output to console.</param>
+    private Task Log(LogMessage message)
     {
-        Console.WriteLine(msg.ToString());
+        Console.WriteLine(message.ToString());
         return Task.CompletedTask;
     }
 
+    /// <summary>
+    /// Creates a the discord bot client. This is where commands and other features are registered into the bot.
+    /// </summary>
     public async Task Client_Ready()
     {
         ulong guildId = 738870706191728772; // The testing server
@@ -93,6 +109,10 @@ public class Program
         }
     }
 
+    /// <summary>
+    /// Handles when a slash command is executed.
+    /// </summary>
+    /// <param name="command">The slash command data from Discord.</param>
     private async Task SlashCommandHandler(SocketSlashCommand command)
     {
         switch (command.Data.Name)
@@ -113,6 +133,11 @@ public class Program
         }
     }
 
+
+    /// <summary>
+    /// Handles the list role command.
+    /// </summary>
+    /// <param name="command">The slash command data.</param>
     private static async Task HandleListRoleCommand(SocketSlashCommand command)
     {
         // We need to extract the user parameter from the command.
