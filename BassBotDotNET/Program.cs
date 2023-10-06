@@ -64,6 +64,10 @@ public class Program
             return;
         }
 
+        ulong guildId = 738870706191728772; // The testing server
+        // Let's build a guild command! We're going to need a guild so lets just put that in a variable.
+        var guild = _client.GetGuild(guildId);
+
         // Next, lets create our slash command builder. This is like the embed builder but for slash commands.
         var firstGuildCommand = new SlashCommandBuilder();
 
@@ -88,19 +92,20 @@ public class Program
 
         try
         {
-            // We can group our commands together with application command properties.
-            SlashCommandBuilder feedbackCommand = _feedbackSlashCommandModule.Command();
-            SlashCommandBuilder slashCommandBuilder = _settingSlashCommandModule.Command();
-            SlashCommandBuilder listRolesCommand = listRolesGuild;
-            SlashCommandBuilder firstGuildcommandBuilder = firstGuildCommand;
+            await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
+            await guild.CreateApplicationCommandAsync(listRolesGuild.Build());
+            await guild.CreateApplicationCommandAsync(_settingSlashCommandModule.Command().Build());
+            await guild.CreateApplicationCommandAsync(_feedbackSlashCommandModule.Command().Build());
 
-            applicationCommandProperties.Add(feedbackCommand.Build());
-            applicationCommandProperties.Add(slashCommandBuilder.Build());
-            applicationCommandProperties.Add(listRolesCommand.Build());
-            applicationCommandProperties.Add(firstGuildcommandBuilder.Build());
+            // We can group our GLOBAL commands together with application command properties.
+            SlashCommandBuilder firstGlobalCommandBuilder = globalCommand;
+
+            applicationCommandProperties.Add(firstGlobalCommandBuilder.Build());
+
+            await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationCommandProperties.ToArray());
 
             // With global commands we don't need the guild.
-            await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
+            //await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
             // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
             // For a production bot, it is recommended to only run the CreateGlobalApplicationCommandAsync() once for each command.
         }
