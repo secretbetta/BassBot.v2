@@ -17,6 +17,8 @@ public class Program
 
     // Settings command module
     private readonly SettingSlashCommandModule _settingSlashCommandModule = new();
+    // Feedback command module
+    private readonly FeedbackSlashCommandModule _feedbackSlashCommandModule = new();
 
     /// <summary>
     /// Main method for the bot.
@@ -94,6 +96,7 @@ public class Program
             
             await _client.Rest.CreateGuildCommand(listRolesGuild.Build(), guildId);
             await _client.Rest.CreateGuildCommand(_settingSlashCommandModule.Command().Build(), guildId);
+            await _client.Rest.CreateGuildCommand(_feedbackSlashCommandModule.Command().Build(), guildId);
             // With global commands we don't need the guild.
             await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
             // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
@@ -125,6 +128,9 @@ public class Program
                 break;
             case "settings":
                 await _settingSlashCommandModule.HandleSettingsCommand(command);
+                break;
+            case "feedback":
+                await _feedbackSlashCommandModule.HandleFeedbackCommand(command);
                 break;
             // all other commands
             default:
