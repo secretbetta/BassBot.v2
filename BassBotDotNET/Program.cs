@@ -93,6 +93,7 @@ public class Program
 
         try
         {
+            // We can group our commands together with application command properties.
             SlashCommandBuilder feedbackCommand = _feedbackSlashCommandModule.Command();
             SlashCommandBuilder slashCommandBuilder = _settingSlashCommandModule.Command();
             SlashCommandBuilder listRolesCommand = listRolesGuild;
@@ -102,12 +103,7 @@ public class Program
             applicationCommandProperties.Add(slashCommandBuilder.Build());
             applicationCommandProperties.Add(listRolesCommand.Build());
             applicationCommandProperties.Add(firstGuildcommandBuilder.Build());
-            // Now that we have our builder, we can call the CreateApplicationCommandAsync method to make our slash command.
-            //await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
-            
-            //await _client.Rest.CreateGuildCommand(listRolesGuild.Build(), guildId);
-            //await _client.Rest.CreateGuildCommand(_settingSlashCommandModule.Command().Build(), guildId);
-            //await _client.Rest.CreateGuildCommand(_feedbackSlashCommandModule.Command().Build(), guildId);
+
             // With global commands we don't need the guild.
             await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
             // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
