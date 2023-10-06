@@ -88,22 +88,22 @@ public class Program
         globalCommand.WithName("first-global-command");
         globalCommand.WithDescription("This is my first global slash command");
 
-        List<ApplicationCommandProperties> applicationCommandProperties = new();
+        List<ApplicationCommandProperties> applicationGlobalCommandProperties = new();
+        List<ApplicationCommandProperties> applicationGuildCommandProperties = new();
 
         try
         {
-            // This is for guild commands
-            await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
-            await guild.CreateApplicationCommandAsync(listRolesGuild.Build());
-            await guild.CreateApplicationCommandAsync(_settingSlashCommandModule.Command().Build());
-            await guild.CreateApplicationCommandAsync(_feedbackSlashCommandModule.Command().Build());
+            // We can group our GUILD commands together with application command properties.
+            applicationGuildCommandProperties.Add(firstGuildCommand.Build());
+            applicationGuildCommandProperties.Add(listRolesGuild.Build());
+            applicationGuildCommandProperties.Add(_settingSlashCommandModule.Command().Build());
+            applicationGuildCommandProperties.Add(_feedbackSlashCommandModule.Command().Build());
 
             // We can group our GLOBAL commands together with application command properties.
-            SlashCommandBuilder firstGlobalCommandBuilder = globalCommand;
+            applicationGlobalCommandProperties.Add(globalCommand.Build());
 
-            applicationCommandProperties.Add(firstGlobalCommandBuilder.Build());
-
-            await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationCommandProperties.ToArray());
+            await guild.BulkOverwriteApplicationCommandAsync(applicationGuildCommandProperties.ToArray());
+            await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationGlobalCommandProperties.ToArray());
         }
         catch (HttpException exception)
         {
