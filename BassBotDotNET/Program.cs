@@ -104,11 +104,6 @@ public class Program
             applicationCommandProperties.Add(firstGlobalCommandBuilder.Build());
 
             await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationCommandProperties.ToArray());
-
-            // With global commands we don't need the guild.
-            //await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
-            // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
-            // For a production bot, it is recommended to only run the CreateGlobalApplicationCommandAsync() once for each command.
         }
         catch (HttpException exception)
         {
