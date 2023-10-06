@@ -92,6 +92,7 @@ public class Program
 
         try
         {
+            // This is for guild commands
             await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
             await guild.CreateApplicationCommandAsync(listRolesGuild.Build());
             await guild.CreateApplicationCommandAsync(_settingSlashCommandModule.Command().Build());
