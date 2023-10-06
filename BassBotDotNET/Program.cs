@@ -58,16 +58,11 @@ public class Program
     /// </summary>
     public async Task Client_Ready()
     {
-        ulong guildId = 738870706191728772; // The testing server
-
         if (_client == null)
         {
             Console.WriteLine("Client is null");
             return;
         }
-
-        // Let's build a guild command! We're going to need a guild so lets just put that in a variable.
-        var guild = _client.GetGuild(guildId);
 
         // Next, lets create our slash command builder. This is like the embed builder but for slash commands.
         var firstGuildCommand = new SlashCommandBuilder();
