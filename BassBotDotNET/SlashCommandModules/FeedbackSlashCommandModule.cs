@@ -19,7 +19,7 @@ public class FeedbackSlashCommandModule
             .WithDescription("Tell us how much you are enjoying this bot!")
             .AddOption(new SlashCommandOptionBuilder()
                 .WithName("rating")
-                .WithDescription("The rating your willing to give our bot")
+                .WithDescription("The rating you're willing to give our bot")
                 .WithRequired(true)
                 .AddChoice("Terrible", 1)
                 .AddChoice("Meh", 2)
