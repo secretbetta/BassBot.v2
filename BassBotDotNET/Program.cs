@@ -17,6 +17,8 @@ public class Program
 
     // Settings command module
     private readonly SettingSlashCommandModule _settingSlashCommandModule = new();
+    // Feedback command module
+    private readonly FeedbackSlashCommandModule _feedbackSlashCommandModule = new();
 
     /// <summary>
     /// Main method for the bot.
@@ -56,14 +58,13 @@ public class Program
     /// </summary>
     public async Task Client_Ready()
     {
-        ulong guildId = 738870706191728772; // The testing server
-
         if (_client == null)
         {
             Console.WriteLine("Client is null");
             return;
         }
 
+        ulong guildId = 738870706191728772; // The testing server
         // Let's build a guild command! We're going to need a guild so lets just put that in a variable.
         var guild = _client.GetGuild(guildId);
 
@@ -87,17 +88,22 @@ public class Program
         globalCommand.WithName("first-global-command");
         globalCommand.WithDescription("This is my first global slash command");
 
+        List<ApplicationCommandProperties> applicationCommandProperties = new();
+
         try
         {
-            // Now that we have our builder, we can call the CreateApplicationCommandAsync method to make our slash command.
+            // This is for guild commands
             await guild.CreateApplicationCommandAsync(firstGuildCommand.Build());
-            
-            await _client.Rest.CreateGuildCommand(listRolesGuild.Build(), guildId);
-            await _client.Rest.CreateGuildCommand(_settingSlashCommandModule.Command().Build(), guildId);
-            // With global commands we don't need the guild.
-            await _client.CreateGlobalApplicationCommandAsync(globalCommand.Build());
-            // Using the ready event is a simple implementation for the sake of the example. Suitable for testing and development.
-            // For a production bot, it is recommended to only run the CreateGlobalApplicationCommandAsync() once for each command.
+            await guild.CreateApplicationCommandAsync(listRolesGuild.Build());
+            await guild.CreateApplicationCommandAsync(_settingSlashCommandModule.Command().Build());
+            await guild.CreateApplicationCommandAsync(_feedbackSlashCommandModule.Command().Build());
+
+            // We can group our GLOBAL commands together with application command properties.
+            SlashCommandBuilder firstGlobalCommandBuilder = globalCommand;
+
+            applicationCommandProperties.Add(firstGlobalCommandBuilder.Build());
+
+            await _client.BulkOverwriteGlobalApplicationCommandsAsync(applicationCommandProperties.ToArray());
         }
         catch (HttpException exception)
         {
@@ -125,6 +131,9 @@ public class Program
                 break;
             case "settings":
                 await _settingSlashCommandModule.HandleSettingsCommand(command);
+                break;
+            case "feedback":
+                await _feedbackSlashCommandModule.HandleFeedbackCommand(command);
                 break;
             // all other commands
             default:

@@ -50,7 +50,7 @@ public class SettingSlashCommandModule
                     .WithName("set")
                     .WithDescription("Sets the field B")
                     .WithType(ApplicationCommandOptionType.SubCommand)
-                    .AddOption("value", ApplicationCommandOptionType.Integer, "the value to set the fie to.", isRequired: true)
+                    .AddOption("value", ApplicationCommandOptionType.Integer, "the value to set the field to.", isRequired: true)
                 ).AddOption(new SlashCommandOptionBuilder()
                     .WithName("get")
                     .WithDescription("Gets the value of field B.")
@@ -64,7 +64,7 @@ public class SettingSlashCommandModule
                     .WithName("set")
                     .WithDescription("Sets the field C")
                     .WithType(ApplicationCommandOptionType.SubCommand)
-                    .AddOption("value", ApplicationCommandOptionType.Boolean, "the value to set the fie to.", isRequired: true)
+                    .AddOption("value", ApplicationCommandOptionType.Boolean, "the value to set the field to.", isRequired: true)
                 ).AddOption(new SlashCommandOptionBuilder()
                     .WithName("get")
                     .WithDescription("Gets the value of field C.")
@@ -84,7 +84,8 @@ public class SettingSlashCommandModule
         var fieldName = command.Data.Options.First().Name;
         var getOrSet = command.Data.Options.First().Options.First().Name;
         // Since there is no value on a get command, we use the ? operator because "Options" can be null.
-        var value = command.Data.Options.First().Options.First().Options?.FirstOrDefault().Value; // THIS LOOKS SO UGLY
+
+        var value = command.Data.Options.First().Options.First().Options.FirstOrDefault()?.Value; // THIS LOOKS SO UGLY
 
         switch (fieldName)
         {
